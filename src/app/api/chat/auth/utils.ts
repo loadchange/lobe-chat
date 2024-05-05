@@ -1,5 +1,6 @@
 import { importJWK, jwtVerify } from 'jose';
 
+import { authEnv } from '@/config/auth';
 import { getServerConfig } from '@/config/server';
 import { JWTPayload, JWT_SECRET_KEY, NON_HTTP_PREFIX } from '@/const/auth';
 import { AgentRuntimeError } from '@/libs/agent-runtime';
@@ -43,10 +44,10 @@ export const checkAuthMethod = (
   apiKey?: string,
   oauthAuthorized?: boolean,
 ) => {
-  const { ACCESS_CODES, ENABLE_OAUTH_SSO } = getServerConfig();
+  const { ACCESS_CODES } = getServerConfig();
 
   // if OAuth 2 header is provided
-  if (ENABLE_OAUTH_SSO && oauthAuthorized) return;
+  if (authEnv.NEXT_PUBLIC_ENABLE_CLERK_AUTH && oauthAuthorized) return;
 
   // if apiKey exist
   if (apiKey) return;
